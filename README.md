@@ -30,13 +30,3 @@ Buka:
 ```text
 http://127.0.0.1:5000/
 ```
-
-## Deploy ke Vercel
-
-1. Upload isi folder ini ke repository GitHub khusus Sistem Fuzzy.
-2. Import repository tersebut di Vercel.
-3. Deploy.
-4. Optional: tambahkan Environment Variable `PAKAR_URL` berisi link hosting Sistem Pakar agar tombol menuju Sistem Pakar aktif.
-
-
-Catatan: Logika sistem diproses menggunakan Python Flask. Tidak menggunakan JavaScript untuk perhitungan utama.
