@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Fuzzy — Cek Kesehatan Tanaman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <div class="page-icon">📊</div>
+    <div>
+      <h1 class="page-title">Sistem Fuzzy — Cek Kesehatan Tanaman</h1>
+      <p class="page-desc">Masukkan data lingkungan tanaman. Sistem akan menghitung skor kesehatan menggunakan logika fuzzy berdasarkan 15 rule yang telah ditentukan.</p>
+      <div class="page-nav">🔍 Ingin diagnosa masalah? <a href="{{ pakar_url }}">Buka Sistem Pakar →</a></div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- KIRI: Input -->
+    <div class="col">
+      <form class="card" method="post" action="/">
+        <div class="card-head">
+          <span class="card-ico">🌱</span>
+          <span class="card-ttl">Parameter Lingkungan</span>
+        </div>
+
+        <div class="field">
+          <div class="field-top">
+            <label for="kelembapan">Kelembapan Tanah</label>
+            <span class="fval" id="val-kelembapan">{{ values.kelembapan }}%</span>
+          </div>
+          <input class="number-input" id="kelembapan" name="kelembapan" type="number" min="0" max="100" value="{{ values.kelembapan }}" step="1" required>
+          <div class="range-labels"><span>0% Kering</span><span>100% Basah</span></div>
+          <div class="ftag" id="tag-kelembapan"><span class="pill {{ tags.kelembapan.class }}">{{ tags.kelembapan.label }}</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-top">
+            <label for="cahaya">Intensitas Cahaya</label>
+            <span class="fval" id="val-cahaya">{{ values.cahaya }}%</span>
+          </div>
+          <input class="number-input" id="cahaya" name="cahaya" type="number" min="0" max="100" value="{{ values.cahaya }}" step="1" required>
+          <div class="range-labels"><span>0% Gelap</span><span>100% Terang</span></div>
+          <div class="ftag" id="tag-cahaya"><span class="pill {{ tags.cahaya.class }}">{{ tags.cahaya.label }}</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-top">
+            <label for="suhu">Suhu Ruangan</label>
+            <span class="fval" id="val-suhu">{{ values.suhu }}°C</span>
+          </div>
+          <input class="number-input" id="suhu" name="suhu" type="number" min="15" max="40" value="{{ values.suhu }}" step="1" required>
+          <div class="range-labels"><span>15°C Dingin</span><span>40°C Panas</span></div>
+          <div class="ftag" id="tag-suhu"><span class="pill {{ tags.suhu.class }}">{{ tags.suhu.label }}</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-top">
+            <label for="siram">Frekuensi Penyiraman</label>
+            <span class="fval" id="val-siram">{{ values.siram }}×/minggu</span>
+          </div>
+          <input class="number-input" id="siram" name="siram" type="number" min="0" max="7" value="{{ values.siram }}" step="1" required>
+          <div class="range-labels"><span>0× Jarang</span><span>7× Setiap hari</span></div>
+          <div class="ftag" id="tag-siram"><span class="pill {{ tags.siram.class }}">{{ tags.siram.label }}</span></div>
+        </div>
+
+        <button class="btn-primary" type="submit">
+          Hitung Kesehatan Tanaman →
+        </button>
+      </form>
+
+      <!-- Tabel kategori -->
+      <div class="card card-sm">
+        <div class="card-head">
+          <span class="card-ico">📖</span>
+          <span class="card-ttl">Tabel Kategori Fuzzy</span>
+        </div>
+        <table class="info-table">
+          <thead><tr><th>Variabel</th><th>Kategori</th><th>Rentang</th></tr></thead>
+          <tbody>
+            <tr><td>Kelembapan</td><td><span class="pill red">Kering</span></td><td>0–35%</td></tr>
+            <tr><td></td><td><span class="pill green">Ideal</span></td><td>36–70%</td></tr>
+            <tr><td></td><td><span class="pill blue">Terlalu Basah</span></td><td>71–100%</td></tr>
+            <tr><td>Cahaya</td><td><span class="pill gray">Rendah</span></td><td>0–35%</td></tr>
+            <tr><td></td><td><span class="pill green">Cukup</span></td><td>36–75%</td></tr>
+            <tr><td></td><td><span class="pill amber">Berlebih</span></td><td>76–100%</td></tr>
+            <tr><td>Suhu</td><td><span class="pill blue">Dingin</span></td><td>15–20°C</td></tr>
+            <tr><td></td><td><span class="pill green">Normal</span></td><td>21–30°C</td></tr>
+            <tr><td></td><td><span class="pill red">Panas</span></td><td>31–40°C</td></tr>
+            <tr><td>Penyiraman</td><td><span class="pill red">Jarang</span></td><td>0–1×/minggu</td></tr>
+            <tr><td></td><td><span class="pill green">Cukup</span></td><td>2–4×/minggu</td></tr>
+            <tr><td></td><td><span class="pill blue">Sering</span></td><td>5–7×/minggu</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- KANAN: Output -->
+    <div class="col">
+      {% if not result %}
+      <div id="fuzzy-placeholder" class="empty-state">
+        <div class="es-icon">🌿</div>
+        <div class="es-title">Belum ada hasil</div>
+        <div class="es-desc">Isi nilai parameter di sebelah kiri lalu klik <strong>Hitung Kesehatan Tanaman</strong>.</div>
+      </div>
+      {% endif %}
+
+      {% if result %}
+      <div id="fuzzy-result">
+        <div class="result-anim">
+          <div class="score-card">
+            <div class="score-top">
+              <div class="score-num">{{ result.score }}</div>
+              <div class="score-max">/ 100</div>
+            </div>
+            <span class="pill {{ result.class }} lg">{{ result.category }}</span>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" id="score-bar" style="width:{{ result.score }}%;background:{{ result.bar }}"></div>
+            </div>
+            <div class="detail-grid">
+              {% for item in result.details %}
+              <div class="detail-cell">
+                <div class="dc-label">{{ item.label }}</div>
+                <div class="dc-val">
+                  {{ item.shown }}
+                  <span class="{{ 'ic-ok' if item.ok else 'ic-warn' }}">{{ '✓' if item.ok else '⚠' }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <div class="rec-box">{{ result.recommendation }} {% if result.pakar_url != '#' %}<a href="{{ result.pakar_url }}" style="color:var(--green)">Buka Sistem Pakar</a>{% endif %}</div>
+          </div>
+          <div class="rule-section">
+            <div class="rule-section-title">Rule yang terpicu — {{ result.fired_rules|length }} dari 15</div>
+            {% if result.fired_rules %}
+              {% for rule in result.fired_rules %}
+              <div class="rule-item">
+                <div class="rule-id">{{ rule.id }}</div>
+                <div class="rule-dot {{ rule.color }}"></div>
+                <div class="rule-text">{{ rule.desc }}</div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div style="font-size:13px;color:var(--text-3);padding:4px 0">
+                Tidak ada rule yang sepenuhnya terpicu; skor dihitung dari bobot tiap variabel.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
